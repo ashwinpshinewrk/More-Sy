@@ -1,3 +1,20 @@
+#include <map>
+
+//MAP EVERYTHING , Use ChatGPT, I ain't not gonna type everything
+std::map<String, char> morseMap = {
+  {",-",'A'}, {"-...",'B'},{"-.-.",'C'},{"-..",'D'},{".",'E'},{"..-,",'F'},
+  {"--.",'G'},{"....",'H'},{"..",'I'},{".---",'J'},{"-.-",'K'}, {".-..",'L'},{"--", 'M'}, {"-.", 'N'}, {"---", 'O'}, {".--.", 'P'},
+  {"--.-", 'Q'}, {".-.", 'R'}, {"...", 'S'}, {"-", 'T'},
+  {"..-", 'U'}, {"...-", 'V'}, {".--", 'W'}, {"-..-", 'X'},
+  {"-.--", 'Y'}, {"--..", 'Z'}
+}
+
+std::map<String, int> wordToInt = {
+  {"ZERO",0}, {"ONE", 1}, {"TWO", 2}, {"THREE", 3},
+  {"FOUR", 4}, {"FIVE", 5}, {"SIX", 6}, {"SEVEN", 7},
+  {"EIGHT", 8}, {"NINE", 9}, {"TEN", 10}
+}
+
 
 const int TOUCH_PIN = 23; //D23
 
