@@ -1,3 +1,14 @@
+#include <Adafruit_SSD1306.h>
+#include <splash.h>
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_GrayOLED.h>
+#include <Adafruit_SPITFT.h>
+#include <Adafruit_SPITFT_Macros.h>
+#include <gfxfont.h>
+
+#include <Wire.h>
+
 #include <map>
 
 //MAP EVERYTHING , Use ChatGPT, I ain't not gonna type everything
@@ -28,6 +39,12 @@ const auto WORD_PAUSE = 2000; // 2 sec
 const auto LAST_PAUSE = 5000;
 
 const int TOUCH_PIN = 23; //D23
+const int SCREEN_WIDTH = 128;
+const int SCREEN_HEIGHT = 64;
+
+#define OLED_RESET -1 
+
+Adafruit_SSD1306 display(SCREEN_WIDTH,SCREEN_HEIGHT,&Wire, OLED_RESET);
 
 bool isTouching = false;
 
@@ -39,6 +56,29 @@ unsigned long lastTouch = 0; //Timer 1
 String morseSymbl = "";
 String decodedWord = "";
 std::vector<String> token; //All the stuff in vector 
+
+void morseProcess();
+
+void updateDisplay(){
+  display.clearDisplay();
+  display.setCursor(0,0);
+
+  display.print("Morse : ");
+  display.println(morseSymbl);
+
+  display.print("Word : ");
+  display.println(decodedWord);
+
+  display.print("Tokens: ");
+  for (auto &w : token){
+    display.print(' ');
+    display.print(w);
+  }
+  display.setCursor(0,56);
+  display.print("More-sy");
+  display.println();
+  display.display();
+}
 
 void morseProcess(){
   long result = 0;
@@ -71,11 +111,33 @@ void morseProcess(){
     }else {
       Serial.println("Invlaid or smt , BRO TOUCH GRASS");
     }
-}
+
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.print("Result : ");
+    if (ok) display.println(result);
+    else display.println("ERROR");
+display.setCursor(0,56);
+  display.print("More-sy");
+    
+  display.display();
+  }
 
 void setup() {
   Serial.begin(115200);
   pinMode(TOUCH_PIN,INPUT);
+  
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)){
+    Serial.print(F("OLED init failed"));
+    for(;;);
+  }
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0,0);
+  display.display();
+  delay(1000);
+  updateDisplay();
 
 }
 
@@ -103,6 +165,7 @@ void loop() {
       Serial.print("-");
       morseSymbl += "-";
     }
+    updateDisplay();
   }
 
   // if(!isTouching && lastTouch > 0 ){
@@ -168,6 +231,7 @@ void loop() {
       Serial.println(letter);
       decodedWord += letter;
       morseSymbl = "";
+      updateDisplay();
     }
 
     else if (decodedWord.length() > 0 && idleTime >= WORD_PAUSE){
@@ -175,6 +239,7 @@ void loop() {
       Serial.println(decodedWord);
       token.push_back(decodedWord);
       decodedWord = "";
+      updateDisplay();
     }
 
     else if (token.size() >= 3 && idleTime >= LAST_PAUSE){
@@ -183,6 +248,7 @@ void loop() {
       morseSymbl = "";
       decodedWord ="";
       Serial.println("\n Ready for next calculation.... ");
+      updateDisplay();
     }
   }
   
