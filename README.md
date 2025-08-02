@@ -68,10 +68,12 @@ None is needed, since most of the code is self explainable.
 
 
 https://github.com/user-attachments/assets/554a10be-5c5c-44d1-99ea-ae1fc99bb206
+
 [Working is shown, but I am slow in typing or touching or whatever you wanna call that.]
 
 
 https://github.com/user-attachments/assets/3c1f332c-3412-4e5a-8764-56a82eaa2613
+
 [My own name in it.]
 
 
